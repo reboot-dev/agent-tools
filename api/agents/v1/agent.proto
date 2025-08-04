@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package agents.v1;
+
+import "rbt/v1alpha1/options.proto";
+
+////////////////////////////////////////////////////////////////////////
+
+message Agent {
+  option (rbt.v1alpha1.state) = {
+  };
+  repeated Message messages = 1;
+}
+
+service AgentMethods {
+  rpc Invoke(InvokeRequest) returns (InvokeResponse) {
+    option (rbt.v1alpha1.method) = {
+      workflow: {},
+      errors: [ "CallToModelError" ],
+    };
+  }
+}
+
+////////////////////////////////////////////////////////////////////////
+
+message Message {
+  string role = 1;
+  string content = 2;
+}
+
+////////////////////////////////////////////////////////////////////////
+
+message InvokeRequest {
+  repeated Message messages = 1;
+}
+
+message InvokeResponse {
+  repeated Message messages = 1;
+}
+
+////////////////////////////////////////////////////////////////////////
+
+message CallToModelError {}
+
+////////////////////////////////////////////////////////////////////////
